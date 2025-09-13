@@ -1,0 +1,16 @@
+[build-system]
+requires = ["setuptools>=67", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "document-archiver"
+version = "0.1.0"
+description = "Korean document archiver: extract text, embed with BERT, cluster, map, and securely store."
+readme = "README.md"
+requires-python = ">=3.9"
+license = {text = "MIT"}
+authors = [{name="S. J. Hwang"}]
+dependencies = []
+
+[tool.setuptools.packages.find]
+where = ["src"]
